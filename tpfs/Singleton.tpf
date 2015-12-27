@@ -1,0 +1,36 @@
+package {packagePath} {
+	
+	public class {ClassName} {
+	
+		/** 单件实例 */
+		private static var Instance:{ClassName};
+
+		/**
+		 * @private
+		 */
+		public function {ClassName} ($null:{NullClass} = null) {
+			// constructor code
+			if ($null == null) {
+				throw new Error("You cannot instantiate this class, please use the static getInstance method.");
+				return;
+			}//end fun
+		}//end constructor
+	
+		/**
+		 * 单件实例化[静态]
+		 */
+		public static function getInstance ():{ClassName} {
+			if ({ClassName}.Instance == null) {
+				{ClassName}.Instance = new {ClassName}(new {NullClass}());
+			}//end if
+			return {ClassName}.Instance;
+		}//end fun
+		/**
+		 * 析构方法
+		 */
+		public function destructor ():void {
+			//
+			{ClassName}.Instance = null;
+		}//end fun
+	}
+}class {NullClass} {}

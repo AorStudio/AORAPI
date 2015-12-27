@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GenerateASDocs" default="main" basedir=".">
+
+	<property file="build.properties"/>
+	
+	<!-- maintarget依赖 clean和 doctarget -->
+	<target name="main" depends="clean,doc" description="Clean build of all ASDocs"/>
+	
+	<!-- cleantarget清除AsDoc输出目录 -->
+	<target name="clean" description="Cleans all ASDocs">
+		<echo level="info">开始清零 ${OUTPUT_DIR}</echo>
+		<delete dir="${OUTPUT_DIR}" deleteonexit="true" includeemptydirs="true" defaultexcludes="true" />
+	</target>
+	
+	<target name="doc">
+		<echo level="info">启动Ant任务，准备执行。</echo>
+		<property name="asdoc.exe" value="${FLEX_HOME}/bin/asdoc" />
+		<property name="asdoc.lib.arg" value="${LIBS_DIR}" />
+		<property name="asdoc.AIRlib.arg" value="${AIRLIBS_DIR}" />
+
+		<echo level="info">变量初始化完成...</echo>
+
+		<exec executable="${asdoc.exe}" failonerror="true">
+			<env key="JAVA_HOME" path="${JAVA_HOME_PATH}"/>
+			<arg line="${asdoc.lib.arg} ${asdoc.AIRlib.arg} -source-path ${SOURCE_PATH} -doc-sources ${SOURCE_DOC_PTAH} -output ${OUTPUT_DIR} ${KEEPXML} ${SKIPXSL}"/>
+		</exec>
+		<echo level="info">ASDoc 输出至 ${OUTPUT_DIR}</echo>
+	</target>
+</project> 

@@ -1,0 +1,295 @@
+package org.motion {
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	
+	import org.resize.ResizeHandle;
+	
+	/**
+	 * AorMotion
+	 * 提示：easting:Function = function (t:Number,b:Number,c:Number,d:Number):Number
+	 *  t:Number — 指定当前时间，介于 0 和持续时间之间（包括二者）。
+	 *	b:Number — 指定动画属性的初始值。 
+     *	c:Number — 指定动画属性的更改总计。(c != 0)；
+     *	d:Number — 指定运动的持续时间。
+	 */
+	public class AorMotion {
+		
+		private static var _isRunning:Boolean = false;
+		public static function get isRunning():Boolean {
+			return AorMotion._isRunning;
+		}
+		
+		public function AorMotion() {
+			throw new Error("This class can not be instantiated !");
+		}
+		
+		public static function translateFormRight ($parent:DisplayObjectContainer,$old:DisplayObject, $new:DisplayObject, $duration:int, easting:Function, isIresizeChild:Boolean = false, IresizeParentborder:DisplayObjectContainer = null):void {
+			if(!$new){
+				throw new Error('AorMotion.translateFormRight Error > $new == null' );
+				return;
+			}
+			AorMotion._isRunning = true;
+			
+			var $loopP:Number = 0;
+			var $hasOld:Boolean = false;
+			if($old){
+				if(isIresizeChild && 'resizeHandleMothed' in $old && ResizeHandle.Instance){
+					ResizeHandle.Instance.removeResizeChild($old);
+				}
+				$hasOld = true;
+			}
+			$parent.addChild($new);
+			if(isIresizeChild && 'resizeHandleMothed' in $new && ResizeHandle.Instance){
+				ResizeHandle.Instance.addResizeChild($new,IresizeParentborder);
+			}
+			var $newStartX:Number = $new.width;
+			$new.x = $newStartX;
+			$new.addEventListener(Event.ENTER_FRAME,function(e:Event):void {
+				var $newX:Number = $newStartX - easting($loopP,0,$newStartX,$duration);
+				$new.x = $newX;
+				if($hasOld){
+					$old.x = $new.x - $new.width;
+				}
+				$loopP ++ ;
+				if($loopP > $duration){
+					e.target.removeEventListener(Event.ENTER_FRAME,arguments.callee);
+					//
+					if($old){
+						DisplayObjectContainer($old).parent.removeChild($old);
+						$old = null;
+					}
+					$new.dispatchEvent(new AorMotionEvent(AorMotionEvent.MOTION_translateFormRight));
+					AorMotion._isRunning = false;
+				}
+			});
+		}		
+		
+		public static function translateFormLeft ($parent:DisplayObjectContainer,$old:DisplayObject, $new:DisplayObject, $duration:int, easting:Function, isIresizeChild:Boolean = false, IresizeParentborder:DisplayObjectContainer = null):void {
+			if(!$new){
+				throw new Error('AorMotion.translateFormRight Error > $new == null' );
+				return;
+			}
+			
+			AorMotion._isRunning = true;
+			
+			var $loopP:Number = 0;
+			var $hasOld:Boolean = false;
+			var $newStartX:Number;
+			if($old){
+				if(isIresizeChild && 'resizeHandleMothed' in $old && ResizeHandle.Instance){
+					ResizeHandle.Instance.removeResizeChild($old);
+				}
+				$hasOld = true;
+			}
+			$parent.addChild($new);
+			if(isIresizeChild && 'resizeHandleMothed' in $new && ResizeHandle.Instance){
+				ResizeHandle.Instance.addResizeChild($new,IresizeParentborder);
+			}
+			$newStartX = - $new.width;
+			$new.x = $newStartX;
+			$new.addEventListener(Event.ENTER_FRAME,function(e:Event):void {
+				var $newX:Number = $newStartX - easting($loopP,0,$newStartX,$duration);
+				$new.x = $newX;
+				if($hasOld){
+					$old.x = $new.x + $new.width;
+				}
+				$loopP ++ ;
+				if($loopP > $duration){
+					e.target.removeEventListener(Event.ENTER_FRAME,arguments.callee);
+					//
+					if($old){
+						DisplayObjectContainer($old).parent.removeChild($old);
+						$old = null;
+					}
+					$new.dispatchEvent(new AorMotionEvent(AorMotionEvent.MOTION_translateFormLeft));
+					AorMotion._isRunning = false;
+				}
+			});
+		}
+		
+		public static function translateFormTop ($parent:DisplayObjectContainer,$old:DisplayObject, $new:DisplayObject, $duration:int, easting:Function, isIresizeChild:Boolean = false, IresizeParentborder:DisplayObjectContainer = null):void {
+			if(!$new){
+				throw new Error('AorMotion.translateFormRight Error > $new == null' );
+				return;
+			}
+			
+			AorMotion._isRunning = true;
+			
+			var $loopP:Number = 0;
+			var $hasOld:Boolean = false;
+			var $newStartY:Number;
+			if($old){
+				if(isIresizeChild && 'resizeHandleMothed' in $old && ResizeHandle.Instance){
+					ResizeHandle.Instance.removeResizeChild($old);
+				}
+				$hasOld = true;
+			}
+			$parent.addChild($new);
+			if(isIresizeChild && 'resizeHandleMothed' in $new && ResizeHandle.Instance){
+				ResizeHandle.Instance.addResizeChild($new,IresizeParentborder);
+			}
+			$newStartY = - $new.height;
+			$new.y = $newStartY;
+			$new.addEventListener(Event.ENTER_FRAME,function(e:Event):void {
+				var $newY:Number = $newStartY - easting($loopP,0,$newStartY,$duration);
+				$new.y = $newY;
+				if($hasOld){
+					$old.y = $new.y + $new.height;
+				}
+				$loopP ++ ;
+				if($loopP > $duration){
+					e.target.removeEventListener(Event.ENTER_FRAME,arguments.callee);
+					//
+					if($old){
+						DisplayObjectContainer($old).parent.removeChild($old);
+						$old = null;
+					}
+					$new.dispatchEvent(new AorMotionEvent(AorMotionEvent.MOTION_translateFormTop));
+					AorMotion._isRunning = false;
+				}
+			});
+		}
+		
+		public static function translateFormBottom ($parent:DisplayObjectContainer,$old:DisplayObject, $new:DisplayObject, $duration:int, easting:Function, isIresizeChild:Boolean = false, IresizeParentborder:DisplayObjectContainer = null):void {
+			if(!$new){
+				throw new Error('AorMotion.translateFormRight Error > $new == null' );
+				return;
+			}
+			AorMotion._isRunning = true;
+			
+			var $loopP:Number = 0;
+			var $hasOld:Boolean = false;
+			var $newStartY:Number;
+			if($old){
+				if(isIresizeChild && 'resizeHandleMothed' in $old && ResizeHandle.Instance){
+					ResizeHandle.Instance.removeResizeChild($old);
+				}
+				$hasOld = true;
+			}
+			$parent.addChild($new);
+			if(isIresizeChild && 'resizeHandleMothed' in $new && ResizeHandle.Instance){
+				ResizeHandle.Instance.addResizeChild($new,IresizeParentborder);
+			}
+			$newStartY = $new.height;
+			$new.y = $newStartY;
+			$new.addEventListener(Event.ENTER_FRAME,function(e:Event):void {
+				var $newY:Number = $newStartY - easting($loopP,0,$newStartY,$duration);
+				$new.y = $newY;
+				if($hasOld){
+					$old.y = $new.y - $new.height;
+				}
+				$loopP ++ ;
+				if($loopP > $duration){
+					e.target.removeEventListener(Event.ENTER_FRAME,arguments.callee);
+					//
+					if($old){
+						DisplayObjectContainer($old).parent.removeChild($old);
+						$old = null;
+					}
+					$new.dispatchEvent(new AorMotionEvent(AorMotionEvent.MOTION_translateFormBottom));
+					AorMotion._isRunning = false;
+				}
+			});
+		}
+		
+		public static function fadeIN ($parent:DisplayObjectContainer,$old:DisplayObject, $new:DisplayObject, $duration:int, easting:Function, isIresizeChild:Boolean = false, IresizeParentborder:DisplayObjectContainer = null):void {
+			if(!$new){
+				throw new Error('AorMotion.fadeIN Error > $new == null' );
+				return;
+			}
+			
+			AorMotion._isRunning = true;
+			
+			var $loopP:Number = 0;
+			//
+			$new.alpha = 0;
+			$parent.addChild($new);
+			if(isIresizeChild && 'resizeHandleMothed' in $new && ResizeHandle.Instance){
+				ResizeHandle.Instance.addResizeChild($new,IresizeParentborder);
+			}
+			
+			$new.addEventListener(Event.ENTER_FRAME,function(e:Event):void {
+				$new.alpha = easting($loopP,0,1,$duration);
+				$loopP ++;
+				if($loopP > $duration){
+					e.target.removeEventListener(Event.ENTER_FRAME,arguments.callee);
+					//
+					if($old){
+						if(isIresizeChild && 'resizeHandleMothed' in $old && ResizeHandle.Instance){
+							ResizeHandle.Instance.removeResizeChild($old);
+						}
+						DisplayObjectContainer($old).parent.removeChild($old);
+						$old = null;
+					}
+					$new.dispatchEvent(new AorMotionEvent(AorMotionEvent.MOTION_FADEIN));
+					AorMotion._isRunning = false;
+				}
+			});
+		}
+		
+		public static function fadeBlackIN ($parent:DisplayObjectContainer,$old:DisplayObject, $new:DisplayObject, $duration:int, easting:Function, isIresizeChild:Boolean = false, IresizeParentborder:DisplayObjectContainer = null):void {
+			if(!$new){
+				throw new Error('AorMotion.fadeBlackIN Error > $new == null' );
+				return;
+			}
+			
+			AorMotion._isRunning = true;
+			
+			var $loopP:Number,$end:Number;
+			//
+			var $black:Sprite = new Sprite();
+			$black.graphics.beginFill(0x000000,1);
+			$black.graphics.drawRect(0,0,$old.width,$old.height);
+			$black.graphics.endFill();
+			$black.alpha = 0;
+			
+			var $oldParent:DisplayObjectContainer = $old.parent;
+			$oldParent.addChild($black);
+			
+			$loopP = 0;
+			$end = Math.floor($duration * 0.5);
+			$black.addEventListener(Event.ENTER_FRAME,function (e:Event):void {
+				$black.alpha = easting($loopP,0,1,$end);
+				$loopP ++;
+				if($loopP > $end){
+					e.target.removeEventListener(Event.ENTER_FRAME,arguments.callee);
+					//
+					if(isIresizeChild && 'resizeHandleMothed' in $old && ResizeHandle.Instance){
+						ResizeHandle.Instance.removeResizeChild($old);
+					}
+					DisplayObjectContainer($old).parent.removeChild($old);
+					$old = null;
+					
+					$loopP = 0;
+					$end = Math.floor($duration * 0.5);
+					//$new.alpha = 0;
+					$parent.addChild($new);
+					$oldParent.addChild($black);
+					
+					if(isIresizeChild && 'resizeHandleMothed' in $new && ResizeHandle.Instance){
+						ResizeHandle.Instance.addResizeChild($new,IresizeParentborder);
+					}
+					
+					$black.addEventListener(Event.ENTER_FRAME,function(e:Event):void {
+						$black.alpha = 1 - easting($loopP,0,1,$end);
+						$loopP ++;
+						if($loopP > $duration){
+							e.target.removeEventListener(Event.ENTER_FRAME,arguments.callee);
+							//
+							$oldParent.removeChild($black);
+							$black = null;
+							$oldParent = null;
+							$new.dispatchEvent(new AorMotionEvent(AorMotionEvent.MOTION_FADEBLACKIN));
+							AorMotion._isRunning = false;
+						}
+					});
+				}
+			});
+		}
+		
+		
+		
+	}
+}

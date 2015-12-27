@@ -1,0 +1,225 @@
+//===========       AORAPI for AS3       =============
+// Author : Aorition 
+//====================================================
+
+
+//===========        UPDATE LOGS         =============
+
+[AORAPI] v 3.032
+	-date: 2015-09-02
+	1.修改 com.media::AORVideo ::尝试修改AORVideo与Away3D产生的冲突问题，此问题造成在移动设备上，只要优先执行了Away3D/AORVideo任意一方，另一方均不能正常使用。
+
+[AORAPI] v 3.031
+	-date: 2015-08-21
+	1. 修改 com.command::AorCommander
+		- 增加一组 静态方法：解决如果指令参数中包含",",可能造成的指令解析错误
+
+[AORAPI] v 3.030
+	-date: 2015-08-13
+	1.修改 org.assets::ImgBatchLoader 的部分逻辑，使其更加稳定。
+
+[AORAPI] v 3.029
+	-date: 2015-08-05
+	1.重写 org.motion::AorMotion 
+		- 重写 org.motion::AorMotionEvent，改变事件通知的内容
+		- 增加 org.motion::AorMotionStatsEmu 用于约定 AorMotionEvent 的状态值
+		- 重写之前的静态类，改为单例模式。
+		- 之前的 AorMotion 在IOS真机上不可预计的bug产生。
+		- 引入 TweenLite 作为核心，对其进行封装
+	2.修改 com.media::AORVideo 
+		- 修正几处Bug
+
+[AORAPI] v 3.028
+	-date: 2015-07-27
+	1.适应AORCSServer接口规范
+		-修改 com.net::SocketManager
+			- 增加一个session属性
+	2.增加 org.net::AorNetworkInfo > 获取本机IP地址、Mac地址的封装类，注意此类不适用于IOS，IOS请使用相关ANE
+	
+[AORAPI] v 3.027
+	-date: 2015-07-23
+	1. 修改 com.command::AorCommander
+		- 增加一组 静态方法：解决如果指令参数中包含"空格",可能造成的指令解析错误
+
+[AORAPI] v 3.026
+	-date: 2015-07-17
+	1.修改 com.media::AORVideo
+		- 重写AORVideo的设计逻辑，使其更易用，更容易理解，且不容易出错。
+
+[AORAPI] v 3.025
+	-date: 2015-07-14
+	1.修改 com.net::SocketManager
+		- 增加 isWorking 属性，表示SocketManager是否处于工作状态，调用StartConnect方法时该标识为true；只有调用Stop方法的形参$isWorking = false时，该标识会重新置为false。该表示可以用于上层组件判定SocketManager是否人为关闭连接还是遇到错误后断开连接。通常用于上层组件写自动重连逻辑。
+
+	2.修改 com.media::AORVideo 
+		- 修正 volume 属性set 逻辑。
+[AORAPI] v.3.024
+	-date: 2015-07-13
+	1.取消 com.net::SocketManager 的单例模式，该组件可以同时工作。
+	2.取消 com.air.net::ServerSocketManager 的单例模式，该组件可以同时工作。
+
+[AORAPI] v.3.023
+	-date: 2015-07-07
+	1.移除了 com.licensing包，因为其不是通用工具方法集合
+	2.修改 org.air::AORFileWorker
+		- 主要方法增加了Error处理方法接口
+		- 优化pat获取逻辑。
+	3.修改 com.air.net::ServerSocketManager
+		- 增加了 EncodeType ，需要初始化是引入其值
+		- 增加 closeSocketClient 方法
+		- 为 心跳检测 增加了默认行为,改行为向已连接的客户端发送‘\r\n|’;
+	4.org.math::Aormath
+		- 增加 randomString 方法
+[AORAPI] v.3.022
+	-date: 2015-07-06
+	1.org.air::AORFileWorker
+		- 增加 readBinaryFile 和 writeBinaryFile 方法
+		- 增加 exists 方法
+	2.修复 org.units::ByteArrayParser -> ByteArrayToString 的bug,该bug导致ByteArray转成String永远为空
+	3.引入 com.crypto 包
+	4.增加 com.licensing 包
+	5.引入 Crypto src 包,并将其加入到libs文件夹下
+
+[AORAPI] v.3.021
+	-date: 2015-07-1
+	1.com.console::AorConsole 增加一个内置命令: author
+
+[AORAPI] v.3.020
+	-date: 2015-05-20
+	1.修改 org.air::AORFileWorker.writeXMLFile方法:使写入的xml在不同的平台上显示都不会造成格式丢失.
+	2.增加 com.air.net::ServerSocketManager.getSocketClientInfo方法:该方法返回一段String,表示当前正在连接此ServerSocektManager的客户端信息
+	3.修改 com.media::AORVideo :: 加入了StageVideo播放功能,优化接口,采用事件机制处理消息.
+		- 增加 com.media::AORVideoEvent
+		- 增加 com.media::AORVideoStatsEmu
+
+[AORAPI] v.3.019
+	-date: 2015-05-05
+	1.修改 com.net.SocketManager的一处逻辑bug.
+
+
+[AORAPI] v.3.018
+	-date: 2015-04-23
+	1.修改 com.net.SocketManager 关于isConnecting的一处bug,该bug导致这个属性的指示无效.
+	1.修改 com.net.SocketManager 关于开始连接时: 将原有Aorfuns.log日志形式的提示修改为SocketManagerEvent.START事件派发.
+[AORAPI] v.3.017
+	-date:2015-01-26
+	1.org.assets:*
+		- 增加这个包
+	2.org.air::*
+		- 将AORFileWorkerLocEnu.as更名为RWLOCEnu.as并放入org.air.enu包中
+	3.com.air.SQLite:*
+		- 增加这个包
+
+[AORAPI] v.3.016
+	-date:2015-01-21
+	1.com.debug::*
+		- 增加这个包
+	2.org.template::TemplateTool
+		- add createRoundRectBG 方法
+	3.org.template::*;
+		- add MovieClipTLite class
+		- add SpriteTLite class
+
+
+[AORAPI] v.3.015
+	-date:2015-01-16
+	1.org.math::AorMath
+		- add getProjectinPoint3D_2Angle ()
+
+[AORAPI] v.3.014
+	-date:2015-01-14
+	1.com.command::*
+		- add AorCommander 
+		- add CmdUnit
+
+[AORAPI] v.3.013
+	-date:2015-01-13
+	1.org.basic::Aorfuns
+		- add trimPro ()
+
+[AORAPI] v.3.012
+	-date:2015-01-09
+	1.org.math::AorMath
+		- update getFlashAngle ()
+		- update getMouse8KV ()
+		- add get8KVByAngle ()
+
+[AORAPI] v.3.011
+	1.com.console::AorConsole
+		- add nextCommand 方法
+		- add dispatchCommandList 方法
+
+[AORAPI] v.3.010
+	1.增加 ASDocBuild目录， 此目录为AORAPI实现用ant生成ASDoc的功能
+		- 附： 	在Fb4.6版本中使用IDE自带swc打包功能生成swc文件（库打包）。在应用中引用该swc,会出现swc中类注释丢失的现象。导致swc不利于使用。
+				--- 解决之道 ::: >
+					  
+					1. 使用ASDoc Tool生成asDoc的时候需要设置 keep-xml and skip-xsl为true。这样在 asDoc文档的导出路径中就会包含一个tempdita子目录。 
+					2. 使用IDE编译生成swc文件  
+					3. 解压swc文件，在swc文件的根目录下新建一个docs的子目录 
+					4. 把第一步生成的tempdita子目录下的文件拷贝到docs下面 
+					5. 用winrara压缩文件城zip，替换后缀zip为swc
+	
+	
+
+
+[AORAPI] v.3.009
+	1.org.basic::Aorfuns
+		- add clearDelayCall 方法
+
+[AORAPI] v.3.008
+	-date:2014-12-29
+	1.org.interactive.*
+		- add 鼠标增强Handler
+	2.com.console::AorConsole
+		- add gestrue按钮控制，在Pad上设置一个隐藏按钮帮助调出Console
+		- modify dispatchCommand 方法，使此方法仍然使用于调用Console内部指令
+		- modify limtEchoCache 方法，log数据缓存现在正常了
+	3.org.motion::AorMotion
+		- add boolean属性（只读）:: isRunning ，表示AorMotion正在执行动画中
+	4.org.basic::Aorfuns
+		- add trim 方法 :: 去除字符串的空格
+	5.com.media::AORVideo
+		- add this class
+		
+[AORAPI] v.3.007
+	-date:2014-12-24
+	1.com.media::AORVideo
+		- add the Class
+
+[AORAPI] v.3.006
+	-date:2014-12-23
+	1.org.template::TemplateTool
+		- add createBaseContainer
+	2.org.basic::Aorfuns
+		- add ARGB2Color
+		- add Color2ARGB	
+		- add RGB2Color
+		- add Color2RGB
+	3.org.units::Color
+		- 将fl.motion::Color移植到AORAPI中
+[AORAPI] v.3.005
+	-date:2014-12-19
+	1.优化com.net::SocketManager
+		- 解决了停止连接时可能弹出的错误,真正的解决了 = =b
+
+[AORAPI] v.3.004
+	-date:2014-12-13
+	1.优化com.net::SocketManager
+		- 解决了停止连接时可能弹出的错误
+
+[AORAPI] v.3.003
+	-date:2014-12-03
+	1.更新 org.resize::ResizeHandle
+		- add DoResize ():void
+
+[AORAPI] v.3.002
+	- date: 2014-11-26
+	
+	1.更新 org.basic::Aorfuns
+		- add XMLStr2String ($ins:String):String 
+		- add delayCall ($delayTime:int, $funcion:Function, $funcParms:Array = null):void
+	
+
+[AORAPI] v.3.0
+	- date: before 2014-01-01 
